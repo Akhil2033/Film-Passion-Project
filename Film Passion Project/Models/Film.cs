@@ -26,4 +26,13 @@ namespace Film_Passion_Project.Models
         public ICollection<Actor> Actors { get; set; }
 
     }
+
+    public class FilmDto
+    {
+        public int FilmId { get; set; }
+        public string FilmName { get; set; }
+        public int FilmYear { get; set; }
+        public string DirectorName { get; set; }
+        public string FilmPlot { get; set; }
+    }
 }
