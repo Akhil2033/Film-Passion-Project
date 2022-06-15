@@ -19,4 +19,11 @@ namespace Film_Passion_Project.Models
         public ICollection<Film> Films { get; set; }
 
     }
+
+    public class ActorDto
+    {
+        public int ActorId { get; set; }
+        public string ActorName { get; set; }
+        public int ActorFee { get; set; }
+    }
 }
