@@ -1,0 +1,12 @@
+﻿@model Film_Passion_Project.Models.FilmDto
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<a href="/Film/List">Go back to List</a>
+<h2>@Model.FilmName</h2>
+<div>Director: @Model.DirectorName</div>
+<div>Year: @Model.FilmYear</div>
+<div>Plot:@Model.FilmPlot</div>
+<div>Studio: @Model.StudioId</div>

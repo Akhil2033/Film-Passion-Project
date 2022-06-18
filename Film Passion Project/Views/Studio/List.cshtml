@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Film_Passion_Project.Models.StudioDto>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+@foreach (var studio in Model)
+{
+    <h2><a href="/Studio/Details/@studio.StudioId">@studio.StudioName</a></h2>
+    <div>ID: @studio.StudioId</div>
+
+}

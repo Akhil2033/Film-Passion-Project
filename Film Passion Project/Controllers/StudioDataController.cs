@@ -18,22 +18,37 @@ namespace Film_Passion_Project.Controllers
 
         // GET: api/StudioData/ListStudios
         [HttpGet]
-        public IQueryable<Studio> ListStudios()
+        public IEnumerable<StudioDto> ListStudios()
         {
-            return db.Studios;
+            List<Studio> Studios = db.Studios.ToList();
+            List<StudioDto> StudioDtos = new List<StudioDto>();
+
+            Studios.ForEach(s => StudioDtos.Add(new StudioDto()
+            {
+                StudioId = s.StudioId,
+                StudioName = s.StudioName
+            }));
+
+            return StudioDtos;
         }
 
         // GET: api/StudioData/FindStudio/5
         [ResponseType(typeof(Studio))]
+        [HttpGet]
         public IHttpActionResult FindStudio(int id)
         {
-            Studio studio = db.Studios.Find(id);
-            if (studio == null)
+            Studio Studio = db.Studios.Find(id);
+            StudioDto StudioDto = new StudioDto()
+            {
+                StudioId = Studio.StudioId,
+                StudioName = Studio.StudioName
+            };
+            if (Studio == null)
             {
                 return NotFound();
             }
 
-            return Ok(studio);
+            return Ok(StudioDto);
         }
 
         // POST: api/StudioData/UpdateAnimal/5

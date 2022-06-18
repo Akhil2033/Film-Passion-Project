@@ -30,7 +30,8 @@ namespace Film_Passion_Project.Controllers
                 FilmName = f.FilmName,
                 FilmYear = f.FilmYear,
                 DirectorName = f.DirectorName,
-                FilmPlot = f.FilmPlot
+                FilmPlot = f.FilmPlot,
+                StudioId = f.Studio.StudioId
             }));
 
             return FilmDtos;
@@ -48,7 +49,8 @@ namespace Film_Passion_Project.Controllers
                 FilmName = Film.FilmName,
                 FilmYear = Film.FilmYear,
                 DirectorName = Film.DirectorName,
-                FilmPlot = Film.FilmPlot
+                FilmPlot = Film.FilmPlot,
+                StudioId= Film.Studio.StudioId
             };
             if (Film == null)
             {
