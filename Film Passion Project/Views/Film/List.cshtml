@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Film_Passion_Project.Models.FilmDto>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+@foreach(var film in Model)
+{
+    <h2><a href="/Film/Details/@film.FilmId">@film.FilmName</a></h2>
+    <div>Director: @film.DirectorName</div>
+    <div>Studio: @film.StudioId</div>
+}
+

@@ -13,4 +13,11 @@ namespace Film_Passion_Project.Models
         public int StudioId { get; set; }
         public string StudioName { get; set; }
     }
+
+    public class StudioDto
+    {
+        public int StudioId { get; set; }
+        public string StudioName { get; set; }
+
+    }
 }

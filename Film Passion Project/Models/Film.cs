@@ -34,5 +34,7 @@ namespace Film_Passion_Project.Models
         public int FilmYear { get; set; }
         public string DirectorName { get; set; }
         public string FilmPlot { get; set; }
+
+        public int StudioId { get; set; }
     }
 }

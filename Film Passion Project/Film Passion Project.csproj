@@ -183,9 +183,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActorDataController.cs" />
+    <Compile Include="Controllers\FilmController.cs" />
     <Compile Include="Controllers\FilmDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\StudioController.cs" />
     <Compile Include="Controllers\StudioDataController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -281,6 +283,14 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Studio\List.cshtml" />
+    <Content Include="Views\Studio\Details.cshtml" />
+    <Content Include="Views\Film\List.cshtml" />
+    <Content Include="Views\Film\Details.cshtml" />
+    <Content Include="Views\Film\New.cshtml" />
+    <Content Include="Views\Film\Error.cshtml" />
+    <Content Include="Views\Studio\New.cshtml" />
+    <Content Include="Views\Studio\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
