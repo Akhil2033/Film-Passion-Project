@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Net.Http;
 using System.Diagnostics;
 using Film_Passion_Project.Models;
+using Film_Passion_Project.Models.ViewModels;
 using System.Web.Script.Serialization;
 
 namespace Film_Passion_Project.Controllers
@@ -19,7 +20,7 @@ namespace Film_Passion_Project.Controllers
         static FilmController()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44397/api/FilmData/");
+            client.BaseAddress = new Uri("https://localhost:44397/api/");
         }
         // GET: Film/List
         public ActionResult List()
@@ -27,15 +28,15 @@ namespace Film_Passion_Project.Controllers
             //objective: communicate with our film data api to retrieve a list of film
             //curl https://localhost:44397/api/FilmData/ListFilms
 
-            string url = "ListFilms";
+            string url = "FilmData/ListFilms";
             HttpResponseMessage response = client.GetAsync(url).Result;
 
-            Debug.WriteLine("the response code is ");
-            Debug.WriteLine(response.StatusCode);
+            //Debug.WriteLine("the response code is ");
+            //Debug.WriteLine(response.StatusCode);
 
             IEnumerable<FilmDto> films = response.Content.ReadAsAsync<IEnumerable<FilmDto>>().Result;
-            Debug.WriteLine("Number of Films received: ");
-            Debug.WriteLine(films.Count());
+            //Debug.WriteLine("Number of Films received: ");
+            //Debug.WriteLine(films.Count());
 
             
             return View(films);
@@ -47,7 +48,7 @@ namespace Film_Passion_Project.Controllers
             //objective: communicate with our film data api to retrieve a list of film
             //curl https://localhost:44397/api/FilmData/FindFilm/{id}
 
-            string url = "FindFilm/"+id;
+            string url = "FilmData/FindFilm/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             Debug.WriteLine("the response code is ");
@@ -78,7 +79,7 @@ namespace Film_Passion_Project.Controllers
             Debug.WriteLine(film.FilmName);
             //objective:add a new film into the system using api
             //curl -H "Content-Type:application/json" -d @film.json https://localhost:44397/api/FilmData/addfilm
-            string url = "addfilm";
+            string url = "FilmData/addfilm";
 
             string jsonpayload = jss.Serialize(film);
 
@@ -97,52 +98,70 @@ namespace Film_Passion_Project.Controllers
                 return RedirectToAction("Errors");
             }
             
-
-
-            return RedirectToAction("List");
         }
 
         // GET: Film/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            UpdateFilm ViewModel = new UpdateFilm();
+
+            string url = "filmdata/findfilm/" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            FilmDto SelectedFilm = response.Content.ReadAsAsync<FilmDto>().Result;
+            ViewModel.SelectedFilm = SelectedFilm;
+
+            url = "studiodata/liststudios/";
+            response = client.GetAsync(url).Result;
+            IEnumerable<StudioDto> StudioOptions = response.Content.ReadAsAsync<IEnumerable<StudioDto>>().Result;
+            ViewModel.StudioOptions = StudioOptions;
+            return View(ViewModel);
         }
 
-        // POST: Film/Edit/5
+        // POST: Film/Update/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Update(int id, Film film)
         {
-            try
+            string url = "filmdata/findfilm/" + id;
+            string jsonpayload = jss.Serialize(film);
+            HttpContent content = new StringContent(jsonpayload);
+            content.Headers.ContentType.MediaType = "application/json";
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            if(response.IsSuccessStatusCode)
             {
-                // TODO: Add update logic here
+                return RedirectToAction("List");
+            }
+            else
+            {
+                return RedirectToAction("Error");
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         // GET: Film/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult DeleteConfirm(int id)
         {
-            return View();
+            string url = "filmdata/findfilm" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            FilmDto selectedfilm = response.Content.ReadAsAsync<FilmDto>().Result;  
+            return View(selectedfilm);
         }
 
         // POST: Film/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            string url = "filmdata/deletefilm/" + id;
+            HttpContent content = new StringContent("");
+            content.Headers.ContentType.MediaType = "application/json";
+            HttpResponseMessage response = client.GetAsync(url).Result;
 
-                return RedirectToAction("Index");
-            }
-            catch
+            if(response.IsSuccessStatusCode)
             {
-                return View();
+                return RedirectToAction("List");
+            }
+            else
+            {
+                return RedirectToAction("Error");
             }
         }
     }
