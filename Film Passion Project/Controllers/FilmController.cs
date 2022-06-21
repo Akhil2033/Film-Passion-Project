@@ -140,7 +140,7 @@ namespace Film_Passion_Project.Controllers
         // GET: Film/Delete/5
         public ActionResult DeleteConfirm(int id)
         {
-            string url = "filmdata/findfilm" + id;
+            string url = "filmdata/findfilm/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
             FilmDto selectedfilm = response.Content.ReadAsAsync<FilmDto>().Result;  
             return View(selectedfilm);

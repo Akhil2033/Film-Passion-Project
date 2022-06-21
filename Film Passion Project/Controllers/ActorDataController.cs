@@ -27,7 +27,7 @@ namespace Film_Passion_Project.Controllers
             {
                 ActorId = a.ActorId,
                 ActorName = a.ActorName,
-                ActorFee = a.ActorFee
+                ActorFee = a.ActorFee,
             }));
 
             return ActorDtos;

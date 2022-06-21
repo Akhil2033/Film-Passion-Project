@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Net.Http;
 using System.Diagnostics;
 using Film_Passion_Project.Models;
+using Film_Passion_Project.Models.ViewModels;
 using System.Web.Script.Serialization;
 
 
@@ -19,7 +20,7 @@ namespace Film_Passion_Project.Controllers
         static StudioController()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44397/api/StudioData/");
+            client.BaseAddress = new Uri("https://localhost:44397/api/");
         }
 
         // GET: Studio/List
@@ -28,7 +29,7 @@ namespace Film_Passion_Project.Controllers
             //Objective: Communicate with our studio data api to retrieve a list of studios
             //curl https://localhost:44397/api/StudioData/ListStudios
 
-            string url = "ListStudios";
+            string url = "StudioData/ListStudios";
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             Debug.WriteLine("The response code is");
@@ -47,7 +48,7 @@ namespace Film_Passion_Project.Controllers
             //Objective: Communicate with our studio data api to retrieve a details about one studio
             //curl https://localhost:44397/api/StudioData/FindStudio/{id}
 
-            string url = "findstudio/"+id;
+            string url = "StudioData/findstudio/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             Debug.WriteLine("The response code is");
@@ -74,8 +75,8 @@ namespace Film_Passion_Project.Controllers
             Debug.WriteLine("the inputed Film Name is:");
             Debug.WriteLine(studio.StudioName);
             //objective:add a new film into the system using api
-            //curl -H "Content-Type:application/json" -d @film.json https://localhost:44397/api/StudioData/addstudio
-            string url = "addstudio";
+            //curl -H "Content-Type:application/json" -d @Studio.json https://localhost:44397/api/StudioData/addstudio
+            string url = "StudioData/addstudio";
 
             string jsonpayload = jss.Serialize(studio);
 
@@ -94,52 +95,66 @@ namespace Film_Passion_Project.Controllers
                 return RedirectToAction("Errors");
             }
 
-
-
-            return RedirectToAction("List");
         }
 
         // GET: Studio/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            UpdateStudio ViewModel = new UpdateStudio();
+
+            string url = "studiodata/findstudio/" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            StudioDto SelectedStudio = response.Content.ReadAsAsync<StudioDto>().Result;
+            ViewModel.SelectedStudio = SelectedStudio;
+            return View(ViewModel);
+
         }
 
         // POST: Studio/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Update(int id, Studio studio)
         {
-            try
+            string url = "studiodata/findstudio/" + id;
+            string jsonpayload = jss.Serialize(studio);
+            HttpContent content = new StringContent(jsonpayload);
+            content.Headers.ContentType.MediaType = "application/json";
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            if(response.IsSuccessStatusCode)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Error");
             }
         }
 
         // GET: Studio/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult DeleteConfirm(int id)
         {
-            return View();
+            string url = "studiodata/findstudio/" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            StudioDto selectedstudio = response.Content.ReadAsAsync<StudioDto>().Result;
+            return View(selectedstudio);
         }
 
         // POST: Studio/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            string url = "studiodata/deletestudio/" + id;
+            HttpContent content = new StringContent("");
+            content.Headers.ContentType.MediaType = "application/json";
+            HttpResponseMessage response = client.GetAsync(url).Result;
 
-                return RedirectToAction("Index");
-            }
-            catch
+            if(response.IsSuccessStatusCode)
             {
-                return View();
+                return RedirectToAction("List");
+            }
+            else
+            {
+                return RedirectToAction("Error");
+
             }
         }
     }

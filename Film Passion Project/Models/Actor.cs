@@ -12,7 +12,13 @@ namespace Film_Passion_Project.Models
         public int ActorId { get; set; }
         public string ActorName { get; set; }
         public int ActorFee { get; set; }
-        
+
+        //[ForeignKey("Film")]
+        //public int FilmId { get; set; }
+
+        //public virtual Film Film { get; set; }
+
+
 
         // An actor can work on many films
 
@@ -25,5 +31,7 @@ namespace Film_Passion_Project.Models
         public int ActorId { get; set; }
         public string ActorName { get; set; }
         public int ActorFee { get; set; }
+        //public int FilmId { get; set; }
+
     }
 }
